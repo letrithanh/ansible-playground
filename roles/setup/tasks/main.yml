@@ -1,0 +1,28 @@
+- name: update apt package
+  become: true
+  apt:
+    update_cache: yes
+
+- name: upgrade apt package
+  become: true
+  apt:
+    upgrade: yes
+
+- name: install working environment
+  become: true
+  shell: apt install -y nodejs npm
+
+- name: install pm2
+  become: true
+  shell: npm install -g pm2
+
+- name: create web directory
+  shell: mkdir -p ~/web
+
+- name: copy web source
+  copy:
+    src: files/index.js
+    dest: ~/web/index.js
+
+- name: start webserver
+  shell: pm2 start ~/web/index.js -f
